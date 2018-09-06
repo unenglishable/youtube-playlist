@@ -1,9 +1,14 @@
-var youtubeDlList= process.argv[2];
+var path = require('path');
+var utils = require(path.join(__dirname, 'utils'));
 
-// parse output of youtube-dl
-var playlist = JSON.parse("[\n" + youtubeDlList.split("\n").join(",") + "\n]");
+var playlist = process.argv[2];
 
-// list names
-playlist.forEach(function(video) {
-  console.log(video.title);
+utils.playlistInfo(playlist, function(error, playlistJSONs) {
+  if (error) { console.error(error); }
+  else {
+    var playlistInfo = playlistJSONs.map(JSON.parse);
+    playlistInfo.forEach(function(video) {
+      console.log(video.title);
+    });
+  }
 });
